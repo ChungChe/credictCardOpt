@@ -1,0 +1,1 @@
+em++ -O2 -s main.cpp -o index.html -s EXPORT_ALL=1
