@@ -1,1 +1,5 @@
-em++ -O2 -s main.cpp -o index.html -s EXPORT_ALL=1
+Remove main()
+  em++ -O2 -s main.cpp -o index.html -s EXPORT_ALL=1
+
+study WebIDL 
+https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder
