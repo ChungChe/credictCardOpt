@@ -1,66 +1,6 @@
 
 #include <emscripten.h>
 
-class CredictCardBase : public Base {
-public:
-  int getDisCount() {
-    return EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('getDisCount')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::getDisCount.';
-      return self['getDisCount']();
-    }, (int)this);
-  }
-  void addPreAssignBill(Bill* arg0) {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('addPreAssignBill')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::addPreAssignBill.';
-      self['addPreAssignBill']($1);
-    }, (int)this, (int)arg0);
-  }
-  void addAssignBill(Bill* arg0) {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('addAssignBill')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::addAssignBill.';
-      self['addAssignBill']($1);
-    }, (int)this, (int)arg0);
-  }
-  void clearAssignBill() {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('clearAssignBill')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::clearAssignBill.';
-      self['clearAssignBill']();
-    }, (int)this);
-  }
-  int getDisCountForCommit() {
-    return EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('getDisCountForCommit')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::getDisCountForCommit.';
-      return self['getDisCountForCommit']();
-    }, (int)this);
-  }
-  void commitCurrentAssign() {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('commitCurrentAssign')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::commitCurrentAssign.';
-      self['commitCurrentAssign']();
-    }, (int)this);
-  }
-  void dumpBestAssign() {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('dumpBestAssign')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::dumpBestAssign.';
-      self['dumpBestAssign']();
-    }, (int)this);
-  }
-  void __destroy__() {
-    EM_ASM_INT({
-      var self = Module['getCache'](Module['CredictCardBase'])[$0];
-      if (!self.hasOwnProperty('__destroy__')) throw 'a JSImplementation must implement all functions, you forgot CredictCardBase::__destroy__.';
-      self['__destroy__']();
-    }, (int)this);
-  }
-};
-
 extern "C" {
 
 // Not using size_t for array indices as the values used by the javascript code are signed.

@@ -149,7 +149,7 @@ function CredictCardBase(arg0, arg1) {
   this.ptr = _emscripten_bind_CredictCardBase_CredictCardBase_2(arg0, arg1);
   getCache(CredictCardBase)[this.ptr] = this;
 };;
-CredictCardBase.prototype = Object.create(Base.prototype);
+CredictCardBase.prototype = Object.create(WrapperObject.prototype);
 CredictCardBase.prototype.constructor = CredictCardBase;
 CredictCardBase.prototype.__class__ = CredictCardBase;
 CredictCardBase.__cache__ = {};

@@ -2,9 +2,16 @@ enum BillType {
     "normal", 
     "icash", 
     "network", 
-    "oil"};
+    "oil"
+};
 
-[JSImplementation="Base"]
+interface Bill {
+    void Bill(long p_year, long p_month, long p_day, long p_amount, BillType p_type, [Const] DOMString p_comment);
+    long getAmount();
+    BillType getType();
+    void info();
+};
+
 interface CredictCardBase {
     void CredictCardBase([Const] DOMString p_name, optional long p_dueDate = 1);
     long getDisCount();
@@ -42,9 +49,3 @@ interface CredictCardMgr {
     void assignCard();
 };
 
-interface Bill {
-    void Bill(long p_year, long p_month, long p_day, long p_amount, BillType p_type, [Const] DOMString p_comment);
-    long getAmount();
-    BillType getType();
-    void info();
-};

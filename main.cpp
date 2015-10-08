@@ -5,9 +5,10 @@
 #include <cmath>
 #include <cstring>
 
+//#include "glue.cpp"
 using std::vector;
-extern "C"
-{
+//extern "C"
+//{
 
 enum BillType {normal, icash, network, oil};
 
@@ -425,4 +426,4 @@ int main()
     return 0;
 }
 #endif
-}
+//}

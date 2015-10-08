@@ -1292,5 +1292,36 @@
       };
     </script>
     <script async type="text/javascript" src="index.js"></script>
+    <script>
+        var cardMgr = new Module.CredictCardMgr();
+        var hnCard = new Module.CredictCardHN("hnCard");
+        var ysCard = new Module.CredictCardYS("ys icash");
+        cardMgr.addCard(hnCard);
+        cardMgr.addCard(ysCard);
+
+        var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");
+        var a2 = new Module.Bill(2015, 9, 25, 1317, "network", "pchome");
+        var a3 = new Module.Bill(2015, 9, 30, 528, "normal", "baby1");
+        var a4 = new Module.Bill(2015, 9, 30, 853, "normal", "baby2");
+        var a5 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil1");
+        var a6 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil2");
+        var a7 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil3");
+        var a8 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil4");
+        var a9 = new Module.Bill(2015, 9, 100, 1490, "network", "baby3");
+        var a0 = new Module.Bill(2015, 9, 100, 25000, "network", "iphone");
+
+        cardMgr.addBill(a1, NULL);
+        cardMgr.addBill(a2, NULL);
+        cardMgr.addBill(a3, NULL);
+        cardMgr.addBill(a4, NULL);
+        cardMgr.addBill(a5, NULL);
+        cardMgr.addBill(a6, NULL);
+        cardMgr.addBill(a7, NULL);
+        cardMgr.addBill(a8, NULL);
+        cardMgr.addBill(a9, NULL);
+        cardMgr.addBill(a0, NULL);
+
+        cardMgr.assignCard();
+    </script>
   </body>
 </html>
