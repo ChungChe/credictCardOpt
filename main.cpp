@@ -6,6 +6,8 @@
 #include <cstring>
 
 using std::vector;
+extern "C"
+{
 
 enum BillType {normal, icash, network, oil};
 
@@ -382,8 +384,8 @@ void CredictCardMgr::assignCard()
     }
 
 }
-
-
+// remove the main, let javascript do it!
+#if 0
 int main()
 {
     CredictCardMgr cardMgr;
@@ -421,4 +423,6 @@ int main()
     cardMgr.assignCard();
 
     return 0;
+}
+#endif
 }
