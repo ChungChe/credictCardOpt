@@ -3,3 +3,8 @@ Remove main()
 
 study WebIDL 
 https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder
+
+
+python ~/emsdk_portable/emscripten/tag-1.34.1/tools/webidl_binder.py main.idl glue
+
+em++ main.cpp my_glue_wrapper.cpp --post-js glue.js -o output.js
