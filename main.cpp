@@ -5,10 +5,9 @@
 #include <cmath>
 #include <cstring>
 
-//#include "glue.cpp"
 using std::vector;
-//extern "C"
-//{
+extern "C"
+{
 
 enum BillType {normal, icash, network, oil};
 
@@ -64,7 +63,7 @@ class CredictCardBase
         virtual ~CredictCardBase()
         {}
 
-        virtual int getDisCount() = 0;
+        virtual int getDisCount() { return 0; };
 
         void addPreAssignBill(Bill* b)
         {
@@ -385,6 +384,7 @@ void CredictCardMgr::assignCard()
     }
 
 }
+#include "glue.cpp"
 // remove the main, let javascript do it!
 #if 0
 int main()
@@ -426,4 +426,4 @@ int main()
     return 0;
 }
 #endif
-//}
+}

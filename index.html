@@ -1290,38 +1290,67 @@
           if (text) Module.printErr('[post-exception status] ' + text);
         };
       };
+
+	Module['onRuntimeInitialized'] = function() {
+	console.log('test');
+	var cardMgr1 = Module.CredictCardMgr();
+	console.log('cardMgr1=' + cardMgr1);
+	var cardMgr = Module._emscripten_bind_CredictCardMgr_CredictCardMgr_0();
+	console.log(cardMgr);
+        //var hnCard = Module.CredictCardHN("hnCard");
+	var hnCard = Module._emscripten_bind_CredictCardHN_CredictCardHN_1();
+	console.log(hnCard);
+        //var ysCard = Module.CredictCardYS("ys icash");
+	var ysCard = Module._emscripten_bind_CredictCardYS_CredictCardYS_1();
+	console.log(ysCard);
+        Module._emscripten_bind_CredictCardMgr_addCard_1(hnCard);
+        Module._emscripten_bind_CredictCardMgr_addCard_1(ysCard);
+	var a1 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 20, 500, "icash", "regular icash");
+        var a2 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 25, 1317, "network", "pchome");
+        var a3 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 30, 528, "normal", "baby1");
+        var a4 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 30, 853, "normal", "baby2");
+        var a5 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 1000, "oil", "regular oil1");
+        var a6 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 1000, "oil", "regular oil2");
+        var a7 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 1000, "oil", "regular oil3");
+        var a8 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 1000, "oil", "regular oil4");
+        var a9 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 1490, "network", "baby3");
+        var a0 = Module._emscripten_bind_Bill_Bill_6(2015, 9, 100, 25000, "network", "iphone");
+	console.log('a1='+a1);
+	console.log('a2='+a2);
+	console.log('a3='+a3);
+	console.log('a4='+a4);
+	console.log('a5='+a5);
+	console.log('a6='+a6);
+	console.log('a7='+a7);
+	console.log('a8='+a8);
+	console.log('a9='+a9);
+	console.log('a0='+a0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a1, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a2, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a3, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a4, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a5, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a6, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a7, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a8, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a9, 0);
+        Module._emscripten_bind_CredictCardMgr_addBill_2(a0, 0);
+        Module._emscripten_bind_CredictCardMgr_assignCard_0();
+	}
+
+
     </script>
-    <script async type="text/javascript" src="index.js"></script>
-    <script>
-        var cardMgr = new Module.CredictCardMgr();
-        var hnCard = new Module.CredictCardHN("hnCard");
-        var ysCard = new Module.CredictCardYS("ys icash");
-        cardMgr.addCard(hnCard);
-        cardMgr.addCard(ysCard);
 
-        var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");
-        var a2 = new Module.Bill(2015, 9, 25, 1317, "network", "pchome");
-        var a3 = new Module.Bill(2015, 9, 30, 528, "normal", "baby1");
-        var a4 = new Module.Bill(2015, 9, 30, 853, "normal", "baby2");
-        var a5 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil1");
-        var a6 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil2");
-        var a7 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil3");
-        var a8 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil4");
-        var a9 = new Module.Bill(2015, 9, 100, 1490, "network", "baby3");
-        var a0 = new Module.Bill(2015, 9, 100, 25000, "network", "iphone");
 
-        cardMgr.addBill(a1, NULL);
-        cardMgr.addBill(a2, NULL);
-        cardMgr.addBill(a3, NULL);
-        cardMgr.addBill(a4, NULL);
-        cardMgr.addBill(a5, NULL);
-        cardMgr.addBill(a6, NULL);
-        cardMgr.addBill(a7, NULL);
-        cardMgr.addBill(a8, NULL);
-        cardMgr.addBill(a9, NULL);
-        cardMgr.addBill(a0, NULL);
 
-        cardMgr.assignCard();
+
+    <script async type="text/javascript" src="index.js">
+    
+    
+    
+    
+    
     </script>
+        
   </body>
 </html>
