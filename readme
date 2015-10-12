@@ -1,10 +1,11 @@
-Remove main()
-  em++ -O2 -s main.cpp -o index.html -s EXPORT_ALL=1
+How to make it works:
 
-study WebIDL 
-https://kripken.github.io/emscripten-site/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#webidl-binder
+    python /path/to/emscripten/tools/webidl_binder.py MyWrapper.idl glue
+    emcc -c -I/path/to/install/dir/include MyWrapper.cpp -o MyWrapper.bc
+    emcc /path/to/install/dir/lib/libMyLibrary.so MyWrapper.bc --post-js glue.js -o MyLibrary.js
 
 
-python ~/emsdk_portable/emscripten/tag-1.34.1/tools/webidl_binder.py main.idl glue
+emcc -c main.cpp -o mainWrapper.bc (main.cpp should includes glue.cpp)
+emcc mainWrapper.bc --post-js glue.js -o main.js
 
-em++ main.cpp my_glue_wrapper.cpp --post-js glue.js -o output.js
+
