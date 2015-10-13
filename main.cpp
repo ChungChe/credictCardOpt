@@ -104,6 +104,14 @@ class CredictCardBase
                 m_bestAssignBillList[i]->info();
             }
         }
+        
+        void getBestAssignBill(vector<Bill*>& billList)
+        {
+            billList.clear;
+            for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
+                billList.push_back(m_bestAssignBillList[i]);
+            }
+        }
     protected:
 
         void _getMergeList(vector<Bill*>& mergeList)
