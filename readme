@@ -1,11 +1,12 @@
 How to make it works:
-
+```
     python /path/to/emscripten/tools/webidl_binder.py MyWrapper.idl glue
     emcc -c -I/path/to/install/dir/include MyWrapper.cpp -o MyWrapper.bc
     emcc /path/to/install/dir/lib/libMyLibrary.so MyWrapper.bc --post-js glue.js -o MyLibrary.js
+```
 
-
+```
 emcc -c main.cpp -o mainWrapper.bc (main.cpp should includes glue.cpp)
 emcc mainWrapper.bc --post-js glue.js -o main.js
-
+```
 
