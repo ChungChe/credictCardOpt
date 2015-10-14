@@ -107,7 +107,7 @@ class CredictCardBase
         
         void getBestAssignBill(vector<Bill*>& billList)
         {
-            billList.clear;
+            billList.clear();
             for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
                 billList.push_back(m_bestAssignBillList[i]);
             }
