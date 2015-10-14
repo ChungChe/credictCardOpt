@@ -29,49 +29,105 @@
 
       <div class="jumbotron">
         <h1>CredictCardOpt</h1>
-        <p class="lead">Insert a bill:</p>
-	<p>Select a date: <input class="datepicker" data-date-format="yyyy/mm/dd" value="Pick a date" name="date"></p>
-	<p>Select a bill type:    
-	<select class="form-control" name="billType">
-                <option value="">Choose a bill type</option>
-                <option value="normal">Normal</option>
-                <option value="icash">ICash</option>
-                <option value="network">Network</option>
-                <option value="oil">Oil</option>
-            </select>
-	</p>
-	<p>Price:
-            <div class="input-group">
-                <input type="text" class="form-control" name="price" />
-                <span class="input-group-addon">$</span>
-            </div>
-    	</p>
-
-
-	<p>Comment:
-		<form role="form">
-    		<div class="form-group">
-      			<input type="text" class="form-control" id="comment">
-   		 </div>
-    
-  </form>
-
-
-	</p>
-	    <p></p>
-	<p><a class="btn btn-lg btn-success" role="button">Add Bill</a></p>
-
-        <p><a class="btn btn-lg btn-success" href="#" role="button">OK</a></p>
+	<p/>
+<div class="container">
+    <div class="row clearfix">
+	<div class="col-md-12 column">
+	    <table class="table table-bordered table-hover" id="tab_logic">
+		<thead>
+		    <tr >
+			<th class="text-center">
+			    #
+			</th>
+			<th class="text-center">
+			    Date
+			</th>
+			<th class="text-center">
+			    Price
+			</th>
+			<th class="text-center">
+			    Bill Type 
+			</th>
+			<th class="text-center">
+			    Comment
+			</th>
+			<th class="text-center">
+			    Pre-Assign
+			</th>
+		    </tr>
+		</thead>
+		<tbody>
+		<tr id='addr0'>
+		    <td>
+			1
+		    </td>
+		    <td>
+			<input class="datepicker form-control" data-date-format="yyyy/mm/dd" placeholder="Pick a date" name="date0">
+		    </td>
+		    <td>
+			<input type="text" name='price0' placeholder='Price' class="form-control"/>
+		    </td>
+		    <td>
+			<select class="form-control" name="billType0">
+               	 	<option value="normal">Normal</option>
+                	<option value="icash">ICash</option>
+                	<option value="network">Network</option>
+                	<option value="oil">Oil</option>
+            		</select>
+		    </td>
+		    <td>
+			<input type="text" name='comment0' placeholder='Comment' class="form-control"/>
+		    </td>
+		    <td>
+		    	<select class="form-control" name="preAssign0">
+                	<option value="">Choose a card</option>
+               	 	<option value="cardHN">HN</option>
+                	<option value="cardYS">YS</option>
+                	<option value="cardHNICash">HNICash</option>
+            		</select>
+		    </td>
+		</tr>
+		<tr id='addr1'></tr>
+		</tbody>
+	    </table>
+	</div>
+    </div>
+    <a id="add_row" class="btn btn-default pull-left">Add Bill</a><a id='delete_row' class="pull-right btn btn-default">Delete Bill</a>
+</div>
+<p/>
+<p><a class="btn btn-lg btn-success" href="#" role="button">OK</a></p>
       </div>
 
+     
 
-
-
+	
     </div> <!-- /container -->
 
-	<script>
-		$('.datepicker').datepicker({
-		})
+    <script>
+	var i=1;
+	$(document).on('click', '#add_row', function(){
+		$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepicker form-control'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' name='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' name='preAssign"+i+"'> <option value=''>Choose a card</option> <option value='cardHN'>HN</option> <option value='cardYS'>YS</option> <option value='cardHNICash'>HNICash</option> </select></td>");
+
+	    $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+	    i++; 
+	 
+	    $('.datepicker').datepicker(function(){
+	    	console.log("test");
+	    });
+	});	
+
+$(document).ready(function(){
+
+     $("#delete_row").click(function(){
+    	 if(i>1){
+		 $("#addr"+(i-1)).html('');
+		 i--;
+		 }
+	 });
+     
+
+});
+
 	</script>
 
 
