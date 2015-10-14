@@ -24,3 +24,8 @@ emcc -c main.cpp -o mainWrapper.bc (main.cpp should includes glue.cpp)
 emcc mainWrapper.bc --post-js glue.js -o main.js
 ```
 
+
+Embind example:
+```
+em++ --bind -o output.js main.cpp
+```
