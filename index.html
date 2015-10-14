@@ -108,19 +108,26 @@
 	test
     </div>
     <script>
-	var i=-1;
+	var i=0;
 	function add_row_data(bill_date, bill_price, bill_type, bill_comment, bill_assign) {
-		$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepicker form-control' value='"+bill_date+"'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' name='billType"+i+"' value="+bill_type+"><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' name='preAssign"+i+"' value="+bill_assign+"> <option value=''>Choose a card</option> <option value='cardHN'>HN</option> <option value='cardYS'>YS</option> <option value='cardHNICash'>HNICash</option> </select></td>");
-		$('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+		$('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
+		$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepicker form-control' value='"+bill_date+"'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' id='billType"+i+"' value="+bill_type+"><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' id='preAssign"+i+"' value="+bill_assign+"> <option value=''>Choose a card</option> <option value='cardHN'>HN</option> <option value='cardYS'>YS</option> <option value='cardHNICash'>HNICash</option> </select></td>");
+		console.log(typeof bill_type);
+		console.log(typeof "icash");
+		if (bill_type == "icash") {
+			console.log("!!!!!!");
+		}
+		$('#billType'+i).val(bill_type);
+		$('#preAssign'+i).val(bill_assign);
 		i++;;
 		$('#tab_logic .datepicker').datepicker(function(){
 	    		console.log("test");
 	    });
 	}
 	$(document).on('click', '#add_row', function(){
+	    $('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
 		$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepicker form-control'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' name='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' name='preAssign"+i+"'> <option value=''>Choose a card</option> <option value='cardHN'>HN</option> <option value='cardYS'>YS</option> <option value='cardHNICash'>HNICash</option> </select></td>");
 
-	    $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
 	    i++; 
 	 
 	    $('#tab_logic .datepicker').datepicker(function(){
@@ -151,9 +158,9 @@ $(document).ready(function(){
 	    var tokens = lines[i].split(", ");
 	    var bill_date = tokens[0];
 	    var bill_price = tokens[1];
-	    var bill_type = tokens[2];
+	    var bill_type = String(tokens[2]);
 	    var bill_comment = tokens[3];
-	    var bill_assign = tokens[4];
+	    var bill_assign = String(tokens[4]);
 	    add_row_data(bill_date, bill_price, bill_type, bill_comment, bill_assign);
 	}
      });
