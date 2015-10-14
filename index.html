@@ -4,41 +4,77 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CreditCardOpt</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="/css/jquery-ui.css">
-    <link rel="stylesheet" href="/css/dataTables.jqueryui.css">
-    <link rel="stylesheet" href="/css/dataTables.colVis.css">
-    <link rel="stylesheet" href="/css/dataTables.colvis.jqueryui.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="/js/jquery.dataTables.min.js"></script>
-    <script src="/js/dataTables.jqueryui.min.js"></script>
-    <script src="/js/dataTables.colResize.js"></script>
-    <script src="/js/dataTables.colVis.js"></script>
-    <script src="/js/jquery-ui.js"></script>
-    <script src="/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="/js/jquery.csv-0.71.min.js"></script>
-    <script src="/main.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/datepicker.css">
+<link rel="stylesheet" href="css/bootstrap-combobox.css">
 
-    <style>
-        .custom-combobox {
-            position: relative;
-            display: inline-block;
-        }
-        .custom-combobox-toggle {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin-left: -1px;
-            padding: 0;
-        }
-        .custom-combobox-input {
-            margin: 0;
-            padding: 5px 10px;
-        }
-    </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-combobox.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+    <script src="/output.js"></script>
 </head>
 <body>
+
+    <div class="container">
+ 
+
+      <div class="jumbotron">
+        <h1>CredictCardOpt</h1>
+        <p class="lead">Insert a bill:</p>
+	<p>Select a date: <input class="datepicker" data-date-format="yyyy/mm/dd" value="Pick a date" name="date"></p>
+	<p>Select a bill type:    
+	<select class="form-control" name="billType">
+                <option value="">Choose a bill type</option>
+                <option value="normal">Normal</option>
+                <option value="icash">ICash</option>
+                <option value="network">Network</option>
+                <option value="oil">Oil</option>
+            </select>
+	</p>
+	<p>Price:
+            <div class="input-group">
+                <input type="text" class="form-control" name="price" />
+                <span class="input-group-addon">$</span>
+            </div>
+    	</p>
+
+
+	<p>Comment:
+		<form role="form">
+    		<div class="form-group">
+      			<input type="text" class="form-control" id="comment">
+   		 </div>
+    
+  </form>
+
+
+	</p>
+	    <p></p>
+	<p><a class="btn btn-lg btn-success" role="button">Add Bill</a></p>
+
+        <p><a class="btn btn-lg btn-success" href="#" role="button">OK</a></p>
+      </div>
+
+
+
+
+    </div> <!-- /container -->
+
+	<script>
+		$('.datepicker').datepicker({
+		})
+	</script>
+
+
     <script>
         var cardMgr = new Module.CredictCardMgr();
         var hnCard = new Module.CredictCardHN("hnCard");
@@ -55,7 +91,8 @@
         var a8 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil4");
         var a9 = new Module.Bill(2015, 9, 100, 1490, "network", "baby3");
         var a0 = new Module.Bill(2015, 9, 100, 25000, "network", "iphone");
-        cardMgr.addBill(a1, null);
+        
+	cardMgr.addBill(a1, null);
         cardMgr.addBill(a2, null);
         cardMgr.addBill(a3, null);
         cardMgr.addBill(a4, null);
@@ -66,6 +103,16 @@
         cardMgr.addBill(a9, null);
         cardMgr.addBill(a0, null);
         cardMgr.assignCard();
+	// =============================================
+	console.log(cardMgr.getMaxDisCount());
+
+	var hnBillVector = new Module.vectorBill();
+	hnCard.getBestAssignBill(hnBillVector);
+	console.log(hnBillVector.size());
+
+	var ysBillVector = new Module.vectorBill();
+	ysCard.getBestAssignBill(ysBillVector);
+	console.log(ysBillVector.size());
     </script>
 </body>
 </html>

@@ -10,6 +10,8 @@
 using std::vector;
 using namespace emscripten;
 
+
+
 enum BillType {normal, icash, network, oil};
 
 EMSCRIPTEN_BINDINGS(BillType) {
@@ -51,7 +53,8 @@ EMSCRIPTEN_BINDINGS(Bill) {
 	.function("getAmount", &Bill::getAmount)
 	.function("getType", &Bill::getType)
 	.function("info", &Bill::info);
-};
+    register_vector<Bill*>("vectorBill");
+}
 
 class CredictCardBase
 {
