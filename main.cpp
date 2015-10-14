@@ -4,27 +4,30 @@
 #include <cassert>
 #include <cmath>
 #include <cstring>
+#include <string>
+#include <emscripten/bind.h>
 
 using std::vector;
-extern "C"
-{
+using namespace emscripten;
+
+
 
 enum BillType {normal, icash, network, oil};
 
-
+EMSCRIPTEN_BINDINGS(BillType) {
+enum_<BillType>("BillType")
+	.value("normal", normal)
+	.value("icash", icash)
+	.value("network", network)
+	.value("oil", oil);
+}
 class Bill
 {
     public:
-        Bill(int p_year, int p_month, int p_day, int p_amount, enum BillType p_type, const char* p_comment = NULL)
+        Bill(int p_year, int p_month, int p_day, int p_amount, enum BillType p_type, std::string p_comment)
             :m_year(p_year), m_month(p_month), m_day(p_day), m_amount(p_amount), m_type(p_type)
         {
-            memset(m_comment, 0, 1024);
-            if (p_comment == NULL) {
-                strcpy(m_comment, "null");
-            }
-            else {
-                strcpy(m_comment, p_comment);
-            }
+        	m_comment = p_comment; 
         }
 
 
@@ -33,7 +36,7 @@ class Bill
         void info()
         {
             printf("year = %d, month = %d, day = %d, amount = %d, type = %d, comment = %s\n",
-                    m_year, m_month, m_day, m_amount, m_type, m_comment);
+                    m_year, m_month, m_day, m_amount, m_type, m_comment.c_str());
         }
     private:
         int m_year;
@@ -41,29 +44,34 @@ class Bill
         int m_day;
         int m_amount;
         enum BillType m_type;
-        char m_comment[1024];
+	std::string m_comment;
 };
 
+EMSCRIPTEN_BINDINGS(Bill) {
+    class_<Bill>("Bill")
+        .constructor<int, int, int, int, enum BillType, std::string>()
+	.function("getAmount", &Bill::getAmount)
+	.function("getType", &Bill::getType)
+	.function("info", &Bill::info);
+    register_vector<Bill*>("vectorBill");
+}
 
 class CredictCardBase
 {
     public:
-        CredictCardBase(const char* p_name, int p_dueDate = 1)
+        CredictCardBase(std::string p_name, int p_dueDate)
             : m_dueDate(p_dueDate), m_commitDisCount(0)
         {
-            memset(m_name, 0, 1024);
-            if (p_name == NULL) {
-                strcpy(m_name, "null");
-            }
-            else {
-                strcpy(m_name, p_name);
-            }
+	    m_name = p_name;
         }
-
+	CredictCardBase(std::string p_name)
+	{
+	    CredictCardBase(p_name, 1);
+	}
         virtual ~CredictCardBase()
         {}
 
-        virtual int getDisCount() { return 0; };
+        virtual int getDisCount() {return 0;};
 
         void addPreAssignBill(Bill* b)
         {
@@ -98,7 +106,7 @@ class CredictCardBase
 
         void dumpBestAssign()
         {
-            printf("credict card = %s\n", m_name);
+            printf("credict card = %s\n", m_name.c_str());
             printf("disCount = %d\n", getDisCountForCommit());
             for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
                 m_bestAssignBillList[i]->info();
@@ -131,23 +139,19 @@ class CredictCardBase
         vector<Bill*> m_preAssignBillList;
         vector<Bill*> m_assignBillList;
         vector<Bill*> m_bestAssignBillList;
-        char m_name[1024];
+	std::string m_name;
 };
-
-
-
 
 class CredictCardHN : public CredictCardBase
 {
     public:
-        CredictCardHN(const char* p_name)
-            : CredictCardBase(p_name)
+	CredictCardHN(std::string p_name)
+            : CredictCardBase(p_name, 1)
         {}
-        int getDisCount();
+        int getDisCount() ;
 };
 
-
-int CredictCardHN::getDisCount()
+int CredictCardHN::getDisCount() 
 {
     vector<Bill*> tmpList;
     _getMergeList(tmpList);
@@ -220,21 +224,18 @@ int CredictCardHN::getDisCount()
 
     return (int) disCount;
 }
-
+;
 
 class CredictCardYS : public CredictCardBase
 {
     public:
-        CredictCardYS(const char* p_name)
-            : CredictCardBase(p_name)
+        CredictCardYS(std::string p_name)
+            : CredictCardBase(p_name, 1)
         {}
         int getDisCount();
     protected:
         int _check699();
 };
-
-
-
 int CredictCardYS::_check699()
 {
     vector<Bill*> tmpList;
@@ -247,7 +248,6 @@ int CredictCardYS::_check699()
     }
     return cnt;
 }
-
 
 int CredictCardYS::getDisCount()
 {
@@ -294,12 +294,11 @@ int CredictCardYS::getDisCount()
 class CredictCardHNICash : public CredictCardBase
 {
     public:
-        CredictCardHNICash(const char* p_name)
-            : CredictCardBase(p_name)
+        CredictCardHNICash(std::string p_name)
+            : CredictCardBase(p_name, 1)
         {}
         int getDisCount();
 };
-
 
 int CredictCardHNICash::getDisCount()
 {
@@ -316,6 +315,26 @@ int CredictCardHNICash::getDisCount()
     return (int) (0.025 * sum);
 }
 
+EMSCRIPTEN_BINDINGS(CredictCardBase) {
+    class_<CredictCardBase>("CredictCardBase")
+	.constructor<std::string, int>()
+	.function("getDiscount", &CredictCardBase::getDisCount, pure_virtual())
+	.function("addPreAssignBill", &CredictCardBase::addPreAssignBill, allow_raw_pointers())
+	.function("addAssignBill", &CredictCardBase::addAssignBill, allow_raw_pointers())
+	.function("clearAssignBill", &CredictCardBase::clearAssignBill)
+	.function("getDisCountForCommit", &CredictCardBase::getDisCountForCommit)
+	.function("commitCurrentAssign", &CredictCardBase::commitCurrentAssign)
+	.function("dumpBestAssign", &CredictCardBase::dumpBestAssign)
+	.function("getBestAssignBill", &CredictCardBase::getBestAssignBill);
+    class_<CredictCardHN, base<CredictCardBase>>("CredictCardHN")
+	 .constructor<std::string>()
+	 .function("getDisCount", &CredictCardHN::getDisCount);
+    class_<CredictCardYS, base<CredictCardBase>>("CredictCardYS")
+	 .constructor<std::string>()
+	 .function("getDisCount", &CredictCardYS::getDisCount);
+    class_<CredictCardHNICash, base<CredictCardBase>>("CredictCardHNICash")
+	 .constructor<std::string>();
+}
 
 class CredictCardMgr
 {
@@ -328,12 +347,21 @@ class CredictCardMgr
         void addBill(Bill *b, CredictCardBase *card);
         void addCard(CredictCardBase *card);
         void assignCard();
+	int  getMaxDisCount() {return m_maxDisCount;};
     private:
         vector<CredictCardBase*> m_credictCardList;
         vector<Bill*> m_billList;
         int m_maxDisCount;
 };
 
+EMSCRIPTEN_BINDINGS(CredictCardMgr) {
+    class_<CredictCardMgr>("CredictCardMgr")
+	.constructor()
+	.function("addBill", &CredictCardMgr::addBill, allow_raw_pointers())
+	.function("addCard", &CredictCardMgr::addCard, allow_raw_pointers())
+	.function("assignCard", &CredictCardMgr::assignCard)
+	.function("getMaxDisCount", &CredictCardMgr::getMaxDisCount);
+};
 
 void CredictCardMgr::addBill(Bill *b, CredictCardBase *card)
 {
@@ -356,7 +384,6 @@ void CredictCardMgr::addCard(CredictCardBase *card)
 {
     m_credictCardList.push_back(card);
 }
-
 
 void CredictCardMgr::assignCard()
 {
@@ -392,7 +419,7 @@ void CredictCardMgr::assignCard()
     }
 
 }
-#include "glue.cpp"
+//#include "glue.cpp"
 // remove the main, let javascript do it!
 #if 0
 int main()
@@ -434,4 +461,3 @@ int main()
     return 0;
 }
 #endif
-}
