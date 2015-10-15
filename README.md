@@ -1,6 +1,11 @@
 # CreditCardOpt
 
+Screenshot:
 <img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
+
+Demo:
+<a href="http://duntex.synology.me:1337">demo</a>
+
 
 How to compile:
 ```
