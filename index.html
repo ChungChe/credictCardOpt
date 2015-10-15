@@ -24,7 +24,7 @@
 
     <div class="jumbotron">
         <h1>CredictCardOpt</h1>
-	<p/>
+        <p id="result"></p>
     <div class="container">
     <div class="row clearfix">
 	<div class="col-md-12 column">
@@ -47,7 +47,7 @@
 			    Comment
 			</th>
 			<th class="text-center">
-			    Pre-Assign
+			    Assign
 			</th>
 		    </tr>
 		</thead>
@@ -145,9 +145,9 @@
             $.get(file, function(txt) {
                 var lines = txt.split("\n");
                 var lineSize = lines.length;
-                console.log('line:' + lineSize);
+                //console.log('line:' + lineSize);
                 for (var i = 0; i < lineSize-1; ++i) {
-                    console.log(i+": "+lines[i]);
+                    //console.log(i+": "+lines[i]);
                     var tokens = lines[i].split(", ");
                     var bill_date = tokens[0];
                     var bill_price = tokens[1];
@@ -170,7 +170,9 @@
             cardMgr.addCard(hnCard);
             cardMgr.addCard(ysCard);
             cardMgr.addCard(hnICashCard);
-            var bills = [];            
+
+            var bills = []; 
+            var total_price = 0;
             for (var idx = 0; idx < i; ++idx) {
                 var current_date = $("#date"+idx).val();
                 if (typeof current_date == 'undefined')
@@ -179,46 +181,108 @@
                 var year = parseInt(toks[0]);
                 var month = parseInt(toks[1]);
                 var day = parseInt(toks[2]);
-                console.log(year+","+month+","+day);
                 
                 var current_price = parseInt($("#price"+idx).val());
                 if (typeof current_price == 'undefined')
                     continue;
-                console.log(current_price);
+                total_price += current_price;
 
                 var current_bill_type = $("#billType"+idx).val();
                 if (typeof current_bill_type == 'undefined')
                     continue;
-                console.log(current_bill_type);
+                var bill_type_enum = Module.BillType.normal;
+                switch (current_bill_type) {
+                    case "normal":
+                        bill_type_enum = Module.BillType.normal;
+                        break;
+                    case "icash":
+                        bill_type_enum = Module.BillType.icash;
+                        break;
+                    case "network":
+                        bill_type_enum = Module.BillType.network;
+                        break;
+                    case "oil":
+                        bill_type_enum = Module.BillType.oil;
+                        break;
+                }
                 var current_comment = $("#comment"+idx).val();
                 if (typeof current_comment == 'undefined')
                     continue;
-                console.log(current_comment);
                 var current_assign = $("#preAssign"+idx).val();
                 if (typeof current_assign == 'undefined')
                     continue;
-                console.log(current_assign);
 
-                bills.push(new Module.Bill(year, month, day, current_price, current_bill_type, current_comment));
-            }
-            for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
-                cardMgr.addBill(bills[billIdx], null);
+                var current_bill = new Module.Bill(year, month, day, current_price, bill_type_enum, current_comment);
+                bills.push(current_bill);
+                //console.log("current_assign: "+current_assign);
+                switch (current_assign) {
+                    case "0":
+                        cardMgr.addBill(current_bill, null);
+                        break;
+                    case "1":
+                        cardMgr.addBill(current_bill, hnCard);
+                        break;
+                    case "2":
+                        cardMgr.addBill(current_bill, ysCard);
+                        break;
+                    case "3":
+                        cardMgr.addBill(current_bill, hnICashCard);
+                        break;
+                }
             }
             cardMgr.assignCard();
-            
+            console.log(total_price);
             console.log(cardMgr.getMaxDisCount());
+            var discount = parseInt(cardMgr.getMaxDisCount());
+            var ratio = parseFloat(discount / total_price) * 100;
+            console.log(ratio.toFixed(2)+'%');
+             
+            $('#result').html('Result: '+discount+' / '+total_price+' = '+ ratio.toFixed(2) + '%');
 
             var hnBillVector = new Module.vectorBill();
             hnCard.getBestAssignBill(hnBillVector);
             console.log(hnBillVector.size());
 
+            for (var hnVecIdx = 0; hnVecIdx < hnBillVector.size(); ++hnVecIdx) {
+                var tmp = hnBillVector.get(hnVecIdx);
+                //console.log(tmp);
+                console.log(tmp.getType());
+                console.log(tmp.getAmount());
+                tmp.info();
+                for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
+                    //console.log(bills[billIdx]);
+                    /*
+                    if (JSON.stringify(tmp) === JSON.stringify(bills[billIdx])) {
+                        console.log("hnVecIdx"+hnVecIdx+" matches with "+billIdx);
+                        break;
+                    }
+                    */
+                }
+            }
+
             var ysBillVector = new Module.vectorBill();
             ysCard.getBestAssignBill(ysBillVector);
             console.log(ysBillVector.size());
 
+
             var hnICashBillVector = new Module.vectorBill();
             hnICashCard.getBestAssignBill(hnICashBillVector);
             console.log(hnICashBillVector.size());
+             
+
+            // delete all bills 
+            for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
+                bills[billIdx].delete();
+            }
+            // delete all cards
+            cardMgr.delete();
+            hnCard.delete();
+            ysCard.delete();
+            hnICashCard.delete();
+            // delete all vectors
+            hnBillVector.delete();
+            ysBillVector.delete();
+            hnICashBillVector.delete();
 /*
 
             var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");

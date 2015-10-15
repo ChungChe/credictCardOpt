@@ -38,21 +38,29 @@ class Bill
             printf("year = %d, month = %d, day = %d, amount = %d, type = %d, comment = %s\n",
                     m_year, m_month, m_day, m_amount, m_type, m_comment.c_str());
         }
+        int getYear() { return m_year; }
+        int getMonth() { return m_month; }
+        int getDay() { return m_day; }
+        std::string getComment() { return m_comment; }
     private:
         int m_year;
         int m_month;
         int m_day;
         int m_amount;
         enum BillType m_type;
-	std::string m_comment;
+	    std::string m_comment;
 };
 
 EMSCRIPTEN_BINDINGS(Bill) {
     class_<Bill>("Bill")
         .constructor<int, int, int, int, enum BillType, std::string>()
-	.function("getAmount", &Bill::getAmount)
-	.function("getType", &Bill::getType)
-	.function("info", &Bill::info);
+        .function("getAmount", &Bill::getAmount)
+        .function("getType", &Bill::getType)
+        .function("info", &Bill::info)
+        .function("getYear", &Bill::getYear)
+        .function("getMonth", &Bill::getMonth)
+        .function("getDay", &Bill::getDay)
+        .function("getComment", &Bill::getComment);
     register_vector<Bill*>("vectorBill");
 }
 
@@ -139,7 +147,7 @@ class CredictCardBase
         vector<Bill*> m_preAssignBillList;
         vector<Bill*> m_assignBillList;
         vector<Bill*> m_bestAssignBillList;
-	std::string m_name;
+	    std::string m_name;
 };
 
 class CredictCardHN : public CredictCardBase
