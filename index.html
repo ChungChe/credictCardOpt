@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CreditCardOpt</title>
+    <title>CreditCardOpt
+    </title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -29,7 +30,8 @@
 
     <div>
         <h1>CreditCardOpt</h1>
-        <p id="result" class="alert alert-success" role="alert">Press OK to find best assignment</p>
+        <p id="result" class="alert alert-success" role="alert">
+        <b>Press OK to find best card assignments</b></p>
     <div class="container">
     <div class="row clearfix">
 	<div class="col-md-12 column">
@@ -40,19 +42,24 @@
 			    #
 			</th>
 			<th class="text-center">
+                <span class='glyphicon glyphicon-calendar' aria-hidden='true' style='font-size:16px; vertical-align:middle'></span>
 			    Date
 			</th>
 			<th class="text-center">
+                <span class='glyphicon glyphicon-usd' aria-hidden='true' style='font-size:16px; vertical-align:middle'></span>
 			    Price
 			</th>
 			<th class="text-center">
+                <span class='glyphicon glyphicon-shopping-cart' aria-hidden='true' style='font-size:20px; vertical-align:middle'></span>
 			    Bill Type 
 			</th>
 			<th class="text-center">
+                <span class='glyphicon glyphicon-comment' aria-hidden='true' style='font-size:16px; vertical-align:middle'></span>
 			    Comment
 			</th>
 			<th class="text-center">
-			    Assign
+                <span class='glyphicon glyphicon-credit-card' aria-hidden='true' style='color: blue; font-size:24px; vertical-align:middle'></span>
+			    Credit Card 
 			</th>
 		    </tr>
 		</thead>
@@ -81,7 +88,7 @@
 		    </td>
 		    <td>
 		    	<select class="form-control" name="preAssign0">
-                	<option value="0">Choose a card</option>
+                	<option value="0">Pick a card</option>
                	 	<option value="1">HN</option>
                 	<option value="2">YS</option>
                 	<option value="3">HNICash</option>
@@ -97,7 +104,7 @@
     <a id="add_row" class="btn btn-default pull-left">Add Bill</a><a id="clear_assign" class="btn btn-space btn-primary" >Clear Assign</a><a id='delete_row' class="pull-right btn btn-default">Delete Bill</a>
     </div>
 <p/>
-<p><a class="btn btn-lg btn-success" href="#" role="button" id="ok_button">OK</a></p>
+<p><a class="btn btn-lg btn-success" href="#" role="button" id="ok_button"> OK <span class='glyphicon glyphicon-usd' aria-hidden='true'/></a></p>
       </div>
 
     </div> <!-- /container -->
@@ -105,7 +112,7 @@
         var i=0;
         function add_row_data(bill_date, bill_price, bill_type, bill_comment, bill_assign) {
 		    $('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
-            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control' value='"+bill_date+"'> </td><td><input  id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
+            $('#addr'+i).html("<td class='text-center' style='vertical-align: middle'>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control text-center' value='"+bill_date+"'> </td><td><input  id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' id='preAssign"+i+"' style='color:blue'> <option value='0'>- Pick a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
             
             var x = document.getElementById("billType"+i);
             for (var idx = 0; idx < x.options.length; ++idx) {
@@ -125,7 +132,7 @@
         }
         $(document).on('click', '#add_row', function(){
             $('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
-            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control'> </td><td><input id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
+            $('#addr'+i).html("<td class='text-center' style='vertical-align: middle'>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control'> </td><td><input id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Pick a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
 
             i++; 
 	 
@@ -276,7 +283,7 @@
             var ratio = parseFloat(discount / total_price) * 100;
             //console.log(ratio.toFixed(2)+'%');
              
-            $('#result').html('Result: '+discount+' / '+total_price+' = '+ ratio.toFixed(2) + '%');
+            $('#result').html('<b>Result: '+discount+' / '+total_price+' = '+ ratio.toFixed(2) + '%</b>');
 
             var hnBillVector = new Module.vectorBill();
             hnCard.getBestAssignBill(hnBillVector);
