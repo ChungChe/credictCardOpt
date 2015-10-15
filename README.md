@@ -1,5 +1,7 @@
 # CreditCardOpt
+
 Add bills then press "OK" to get best credit card assignments
+
 =========================================================
 Screenshot:
 <img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
