@@ -182,7 +182,7 @@
             }
             return false;
         }
-
+        var cardsTaken = [];
         function setCard(billVec1, billVec2, cardVal) {
             for (var i = 0; i < billVec1.size(); ++i) {
                 var tmp = billVec1.get(i);
@@ -190,7 +190,11 @@
                     var currBill = billVec2[j];
                     if (isSameBill(tmp, currBill)) {
                         //console.log("i"+i+" matches with "+j);
+                        if (cardsTaken.indexOf(j) !== -1) {
+                            continue;
+                        }
                         $("#tab_logic #preAssign"+j).val(parseInt(cardVal));
+                        cardsTaken.push(j);
                         break;
                     }
                 }
@@ -325,6 +329,8 @@
             hnBillVector.delete();
             ysBillVector.delete();
             hnICashBillVector.delete();
+
+            cardsTaken = [];
 /*
 
             var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");
