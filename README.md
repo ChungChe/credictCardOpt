@@ -3,7 +3,6 @@
 Add bills then press "OK" to get best credit card assignments
 
 <a href="http://duntex.synology.me:1337">Demo</a>
-
 =========================================================
 Screenshot:
 <img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
