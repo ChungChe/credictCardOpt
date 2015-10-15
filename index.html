@@ -17,6 +17,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <script src="/output.js"></script>
+    <style>
+        .btn-space {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -89,7 +94,7 @@
 	    </table>
 	</div>
     </div>
-    <a id="add_row" class="btn btn-default pull-left">Add Bill</a><a id='delete_row' class="pull-right btn btn-default">Delete Bill</a>
+    <a id="add_row" class="btn btn-default pull-left">Add Bill</a><a id="clear_assign" class="btn btn-space btn-primary" >Clear Assign</a><a id='delete_row' class="pull-right btn btn-default">Delete Bill</a>
     </div>
 <p/>
 <p><a class="btn btn-lg btn-success" href="#" role="button" id="ok_button">OK</a></p>
@@ -132,7 +137,12 @@
         });	
         $("#ok_button").click(function() {
                 findBest();
-                });
+        });
+        $("#clear_assign").click(function() {
+            for (var myIdx = 0; myIdx < i; ++myIdx) {
+                $("#tab_logic #preAssign"+myIdx).val(0);
+            }
+        });
         $(document).ready(function(){
 
             $("#delete_row").click(function(){
@@ -162,6 +172,31 @@
 
     <script>
         
+        function isSameBill(obj1, obj2) {
+            if ((obj1.getYear() == obj2.getYear()) &&
+                    (obj1.getMonth() == obj2.getMonth()) &&
+                    (obj1.getDay() == obj2.getDay()) &&
+                    (obj1.getType() == obj2.getType()) &&
+                    (obj1.getComment() == obj2.getComment())) {
+                return true;
+            }
+            return false;
+        }
+
+        function setCard(billVec1, billVec2, cardVal) {
+            for (var i = 0; i < billVec1.size(); ++i) {
+                var tmp = billVec1.get(i);
+                for (var j = 0; j < billVec2.length; ++j) {
+                    var currBill = billVec2[j];
+                    if (isSameBill(tmp, currBill)) {
+                        //console.log("i"+i+" matches with "+j);
+                        $("#tab_logic #preAssign"+j).val(parseInt(cardVal));
+                        break;
+                    }
+                }
+            }
+        }
+
         function findBest() {
             var cardMgr = new Module.CredictCardMgr();
             var hnCard = new Module.CredictCardHN("hnCard");
@@ -242,33 +277,40 @@
             var hnBillVector = new Module.vectorBill();
             hnCard.getBestAssignBill(hnBillVector);
             console.log(hnBillVector.size());
-
+            
+            setCard(hnBillVector, bills, 1);
+            /*
             for (var hnVecIdx = 0; hnVecIdx < hnBillVector.size(); ++hnVecIdx) {
                 var tmp = hnBillVector.get(hnVecIdx);
-                //console.log(tmp);
-                console.log(tmp.getType());
-                console.log(tmp.getAmount());
-                tmp.info();
                 for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
-                    //console.log(bills[billIdx]);
-                    /*
-                    if (JSON.stringify(tmp) === JSON.stringify(bills[billIdx])) {
+                    var currBill = bills[billIdx];
+                    if (isSameBill(tmp, currBill)) {
                         console.log("hnVecIdx"+hnVecIdx+" matches with "+billIdx);
                         break;
                     }
-                    */
                 }
-            }
+            }*/
 
             var ysBillVector = new Module.vectorBill();
             ysCard.getBestAssignBill(ysBillVector);
             console.log(ysBillVector.size());
-
+            setCard(ysBillVector, bills, 2);
+            /*
+            for (var ysVecIdx = 0; ysVecIdx < ysBillVector.size(); ++ysVecIdx) {
+                var tmp = ysBillVector.get(ysVecIdx);
+                for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
+                    var currBill = bills[billIdx];
+                    if (isSameBill(tmp, currBill)) {
+                        console.log("ysVecIdx"+ysVecIdx+" matches with "+billIdx);
+                        break;
+                    }
+                }
+            }*/
 
             var hnICashBillVector = new Module.vectorBill();
             hnICashCard.getBestAssignBill(hnICashBillVector);
             console.log(hnICashBillVector.size());
-             
+            setCard(hnICashBillVector, bills, 3);
 
             // delete all bills 
             for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
