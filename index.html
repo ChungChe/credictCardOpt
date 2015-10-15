@@ -28,7 +28,7 @@
     <div class="container">
 
     <div>
-        <h1>CredictCardOpt</h1>
+        <h1>CreditCardOpt</h1>
         <p id="result" class="alert alert-success" role="alert">Press OK to find best assignment</p>
     <div class="container">
     <div class="row clearfix">
@@ -198,10 +198,10 @@
         }
 
         function findBest() {
-            var cardMgr = new Module.CredictCardMgr();
-            var hnCard = new Module.CredictCardHN("hnCard");
-            var ysCard = new Module.CredictCardYS("ys icash");
-            var hnICashCard = new Module.CredictCardHNICash("hn icash");
+            var cardMgr = new Module.CreditCardMgr();
+            var hnCard = new Module.CreditCardHN("hnCard");
+            var ysCard = new Module.CreditCardYS("ys icash");
+            var hnICashCard = new Module.CreditCardHNICash("hn icash");
             cardMgr.addCard(hnCard);
             cardMgr.addCard(ysCard);
             cardMgr.addCard(hnICashCard);
