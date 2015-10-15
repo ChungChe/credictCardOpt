@@ -27,9 +27,9 @@
 
     <div class="container">
 
-    <div class="jumbotron">
+    <div>
         <h1>CredictCardOpt</h1>
-        <p id="result"></p>
+        <p id="result" class="alert alert-success" role="alert">Press OK to find best assignment</p>
     <div class="container">
     <div class="row clearfix">
 	<div class="col-md-12 column">
@@ -116,7 +116,7 @@
             
             $("#tab_logic #preAssign"+i).val(parseInt(bill_assign));
 
-            i++;;
+            i++;
             $('#tab_logic .datepickerx').datepicker({'toggleActive':true})
                 .on('changeDate', function(e) {
                         //console.log('on select');
