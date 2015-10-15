@@ -1,4 +1,4 @@
-# CredictCardOpt
+# CreditCardOpt
 
 How to make it works:
 

@@ -12,8 +12,8 @@ interface Bill {
     void info();
 };
 
-interface CredictCardBase {
-    void CredictCardBase([Const] DOMString p_name, optional long p_dueDate = 1);
+interface CreditCardBase {
+    void CreditCardBase([Const] DOMString p_name, optional long p_dueDate = 1);
     long getDisCount();
     void addPreAssignBill(Bill b);
     void addAssignBill(Bill b);
@@ -24,28 +24,28 @@ interface CredictCardBase {
     //void _getMergeList([Ref] vector<Bill> mergeList);
 };
 
-interface CredictCardHN {
-    void CredictCardHN([Const] DOMString p_name);
+interface CreditCardHN {
+    void CreditCardHN([Const] DOMString p_name);
     long getDisCount();
 };
-CredictCardHN implements CredictCardBase;
+CreditCardHN implements CreditCardBase;
 
-interface CredictCardYS {
-    void CredictCardYS([Const] DOMString p_name);
+interface CreditCardYS {
+    void CreditCardYS([Const] DOMString p_name);
     long getDisCount();
 };
-CredictCardYS implements CredictCardBase;
+CreditCardYS implements CreditCardBase;
 
-interface CredictCardHNICash {
-    void CredictCardHNICash([Const] DOMString p_name);
+interface CreditCardHNICash {
+    void CreditCardHNICash([Const] DOMString p_name);
     long getDisCount();
 };
-CredictCardHNICash implements CredictCardBase;
+CreditCardHNICash implements CreditCardBase;
 
-interface CredictCardMgr {
-    void CredictCardMgr();
-    void addBill(Bill b, CredictCardBase card);
-    void addCard(CredictCardBase card);
+interface CreditCardMgr {
+    void CreditCardMgr();
+    void addBill(Bill b, CreditCardBase card);
+    void addCard(CreditCardBase card);
     void assignCard();
 };
 

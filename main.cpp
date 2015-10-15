@@ -64,19 +64,19 @@ EMSCRIPTEN_BINDINGS(Bill) {
     register_vector<Bill*>("vectorBill");
 }
 
-class CredictCardBase
+class CreditCardBase
 {
     public:
-        CredictCardBase(std::string p_name, int p_dueDate)
+        CreditCardBase(std::string p_name, int p_dueDate)
             : m_dueDate(p_dueDate), m_commitDisCount(0)
         {
 	    m_name = p_name;
         }
-	CredictCardBase(std::string p_name)
+	CreditCardBase(std::string p_name)
 	{
-	    CredictCardBase(p_name, 1);
+	    CreditCardBase(p_name, 1);
 	}
-        virtual ~CredictCardBase()
+        virtual ~CreditCardBase()
         {}
 
         virtual int getDisCount() {return 0;};
@@ -114,7 +114,7 @@ class CredictCardBase
 
         void dumpBestAssign()
         {
-            printf("credict card = %s\n", m_name.c_str());
+            printf("credit card = %s\n", m_name.c_str());
             printf("disCount = %d\n", getDisCountForCommit());
             for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
                 m_bestAssignBillList[i]->info();
@@ -150,16 +150,16 @@ class CredictCardBase
 	    std::string m_name;
 };
 
-class CredictCardHN : public CredictCardBase
+class CreditCardHN : public CreditCardBase
 {
     public:
-	CredictCardHN(std::string p_name)
-            : CredictCardBase(p_name, 1)
+	CreditCardHN(std::string p_name)
+            : CreditCardBase(p_name, 1)
         {}
         int getDisCount() ;
 };
 
-int CredictCardHN::getDisCount() 
+int CreditCardHN::getDisCount() 
 {
     vector<Bill*> tmpList;
     _getMergeList(tmpList);
@@ -234,17 +234,17 @@ int CredictCardHN::getDisCount()
 }
 ;
 
-class CredictCardYS : public CredictCardBase
+class CreditCardYS : public CreditCardBase
 {
     public:
-        CredictCardYS(std::string p_name)
-            : CredictCardBase(p_name, 1)
+        CreditCardYS(std::string p_name)
+            : CreditCardBase(p_name, 1)
         {}
         int getDisCount();
     protected:
         int _check699();
 };
-int CredictCardYS::_check699()
+int CreditCardYS::_check699()
 {
     vector<Bill*> tmpList;
     _getMergeList(tmpList);
@@ -257,7 +257,7 @@ int CredictCardYS::_check699()
     return cnt;
 }
 
-int CredictCardYS::getDisCount()
+int CreditCardYS::getDisCount()
 {
     vector<Bill*> tmpList;
     _getMergeList(tmpList);
@@ -299,16 +299,16 @@ int CredictCardYS::getDisCount()
 }
 
 
-class CredictCardHNICash : public CredictCardBase
+class CreditCardHNICash : public CreditCardBase
 {
     public:
-        CredictCardHNICash(std::string p_name)
-            : CredictCardBase(p_name, 1)
+        CreditCardHNICash(std::string p_name)
+            : CreditCardBase(p_name, 1)
         {}
         int getDisCount();
 };
 
-int CredictCardHNICash::getDisCount()
+int CreditCardHNICash::getDisCount()
 {
     vector<Bill*> tmpList;
     _getMergeList(tmpList);
@@ -323,63 +323,63 @@ int CredictCardHNICash::getDisCount()
     return (int) (0.025 * sum);
 }
 
-EMSCRIPTEN_BINDINGS(CredictCardBase) {
-    class_<CredictCardBase>("CredictCardBase")
+EMSCRIPTEN_BINDINGS(CreditCardBase) {
+    class_<CreditCardBase>("CreditCardBase")
 	.constructor<std::string, int>()
-	.function("getDiscount", &CredictCardBase::getDisCount, pure_virtual())
-	.function("addPreAssignBill", &CredictCardBase::addPreAssignBill, allow_raw_pointers())
-	.function("addAssignBill", &CredictCardBase::addAssignBill, allow_raw_pointers())
-	.function("clearAssignBill", &CredictCardBase::clearAssignBill)
-	.function("getDisCountForCommit", &CredictCardBase::getDisCountForCommit)
-	.function("commitCurrentAssign", &CredictCardBase::commitCurrentAssign)
-	.function("dumpBestAssign", &CredictCardBase::dumpBestAssign)
-	.function("getBestAssignBill", &CredictCardBase::getBestAssignBill);
-    class_<CredictCardHN, base<CredictCardBase>>("CredictCardHN")
+	.function("getDiscount", &CreditCardBase::getDisCount, pure_virtual())
+	.function("addPreAssignBill", &CreditCardBase::addPreAssignBill, allow_raw_pointers())
+	.function("addAssignBill", &CreditCardBase::addAssignBill, allow_raw_pointers())
+	.function("clearAssignBill", &CreditCardBase::clearAssignBill)
+	.function("getDisCountForCommit", &CreditCardBase::getDisCountForCommit)
+	.function("commitCurrentAssign", &CreditCardBase::commitCurrentAssign)
+	.function("dumpBestAssign", &CreditCardBase::dumpBestAssign)
+	.function("getBestAssignBill", &CreditCardBase::getBestAssignBill);
+    class_<CreditCardHN, base<CreditCardBase>>("CreditCardHN")
 	 .constructor<std::string>()
-	 .function("getDisCount", &CredictCardHN::getDisCount);
-    class_<CredictCardYS, base<CredictCardBase>>("CredictCardYS")
+	 .function("getDisCount", &CreditCardHN::getDisCount);
+    class_<CreditCardYS, base<CreditCardBase>>("CreditCardYS")
 	 .constructor<std::string>()
-	 .function("getDisCount", &CredictCardYS::getDisCount);
-    class_<CredictCardHNICash, base<CredictCardBase>>("CredictCardHNICash")
+	 .function("getDisCount", &CreditCardYS::getDisCount);
+    class_<CreditCardHNICash, base<CreditCardBase>>("CreditCardHNICash")
 	 .constructor<std::string>();
 }
 
-class CredictCardMgr
+class CreditCardMgr
 {
     public:
-        CredictCardMgr()
+        CreditCardMgr()
             : m_maxDisCount(0)
         {
             srand(0);
         }
-        void addBill(Bill *b, CredictCardBase *card);
-        void addCard(CredictCardBase *card);
+        void addBill(Bill *b, CreditCardBase *card);
+        void addCard(CreditCardBase *card);
         void assignCard();
 	int  getMaxDisCount() {return m_maxDisCount;};
     private:
-        vector<CredictCardBase*> m_credictCardList;
+        vector<CreditCardBase*> m_creditCardList;
         vector<Bill*> m_billList;
         int m_maxDisCount;
 };
 
-EMSCRIPTEN_BINDINGS(CredictCardMgr) {
-    class_<CredictCardMgr>("CredictCardMgr")
+EMSCRIPTEN_BINDINGS(CreditCardMgr) {
+    class_<CreditCardMgr>("CreditCardMgr")
 	.constructor()
-	.function("addBill", &CredictCardMgr::addBill, allow_raw_pointers())
-	.function("addCard", &CredictCardMgr::addCard, allow_raw_pointers())
-	.function("assignCard", &CredictCardMgr::assignCard)
-	.function("getMaxDisCount", &CredictCardMgr::getMaxDisCount);
+	.function("addBill", &CreditCardMgr::addBill, allow_raw_pointers())
+	.function("addCard", &CreditCardMgr::addCard, allow_raw_pointers())
+	.function("assignCard", &CreditCardMgr::assignCard)
+	.function("getMaxDisCount", &CreditCardMgr::getMaxDisCount);
 };
 
-void CredictCardMgr::addBill(Bill *b, CredictCardBase *card)
+void CreditCardMgr::addBill(Bill *b, CreditCardBase *card)
 {
     if (card == NULL) {
         m_billList.push_back(b);
     }
     else {
-        for (size_t i = 0; i < m_credictCardList.size(); i++) {
-            if (m_credictCardList[i] == card) {
-                m_credictCardList[i]->addPreAssignBill(b);
+        for (size_t i = 0; i < m_creditCardList.size(); i++) {
+            if (m_creditCardList[i] == card) {
+                m_creditCardList[i]->addPreAssignBill(b);
                 return;
             }
         }
@@ -388,41 +388,41 @@ void CredictCardMgr::addBill(Bill *b, CredictCardBase *card)
     }
 }
 
-void CredictCardMgr::addCard(CredictCardBase *card)
+void CreditCardMgr::addCard(CreditCardBase *card)
 {
-    m_credictCardList.push_back(card);
+    m_creditCardList.push_back(card);
 }
 
-void CredictCardMgr::assignCard()
+void CreditCardMgr::assignCard()
 {
-    size_t maxIter = (size_t) (2 * pow(m_credictCardList.size(), m_billList.size()));
-    //    printf("maxIter = %d (base = %d, exp = %d)\n", maxIter, m_credictCardList.size(), m_billList.size());
+    size_t maxIter = (size_t) (2 * pow(m_creditCardList.size(), m_billList.size()));
+    //    printf("maxIter = %d (base = %d, exp = %d)\n", maxIter, m_creditCardList.size(), m_billList.size());
 
     for (size_t iter = 0; iter < maxIter ; iter++) {
-        for (size_t i = 0; i < m_credictCardList.size(); i++) {
-            m_credictCardList[i]->clearAssignBill();
+        for (size_t i = 0; i < m_creditCardList.size(); i++) {
+            m_creditCardList[i]->clearAssignBill();
         }
         for (size_t i = 0; i < m_billList.size(); i++) {
 
-            int randIdx = rand() % m_credictCardList.size();
-            m_credictCardList[randIdx]->addAssignBill(m_billList[i]);
+            int randIdx = rand() % m_creditCardList.size();
+            m_creditCardList[randIdx]->addAssignBill(m_billList[i]);
         }
         int totalDisCount = 0;
-        for (size_t i = 0; i < m_credictCardList.size(); i++) {
-            totalDisCount += m_credictCardList[i]->getDisCount();
+        for (size_t i = 0; i < m_creditCardList.size(); i++) {
+            totalDisCount += m_creditCardList[i]->getDisCount();
         }
         if (totalDisCount > m_maxDisCount) {
             m_maxDisCount = totalDisCount;
-            for (size_t i = 0; i < m_credictCardList.size(); i++) {
-                m_credictCardList[i]->commitCurrentAssign();
+            for (size_t i = 0; i < m_creditCardList.size(); i++) {
+                m_creditCardList[i]->commitCurrentAssign();
             }
         }
     }
     printf("max disCount = %d\n", m_maxDisCount);
 
     printf("==================================\n");
-    for (size_t i = 0; i < m_credictCardList.size(); i++) {
-        m_credictCardList[i]->dumpBestAssign();
+    for (size_t i = 0; i < m_creditCardList.size(); i++) {
+        m_creditCardList[i]->dumpBestAssign();
         printf("==================================\n");
     }
 
@@ -432,11 +432,11 @@ void CredictCardMgr::assignCard()
 #if 0
 int main()
 {
-    CredictCardMgr cardMgr;
+    CreditCardMgr cardMgr;
     
-    CredictCardHN hnCard("hnCard");
-//    CredictCardHNICash hnICashCard("hnICashCard");
-    CredictCardYS ysCard("ys icash");
+    CreditCardHN hnCard("hnCard");
+//    CreditCardHNICash hnICashCard("hnICashCard");
+    CreditCardYS ysCard("ys icash");
 
     cardMgr.addCard(&hnCard);
 //    cardMgr.addCard(&hnICashCard);
