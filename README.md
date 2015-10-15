@@ -1,5 +1,7 @@
 # CreditCardOpt
 
+<img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
+
 How to compile:
 ```
 em++ --bind -o output.js main.cpp
