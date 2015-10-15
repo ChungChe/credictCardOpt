@@ -92,7 +92,7 @@
     <a id="add_row" class="btn btn-default pull-left">Add Bill</a><a id='delete_row' class="pull-right btn btn-default">Delete Bill</a>
     </div>
 <p/>
-<p><a class="btn btn-lg btn-success" href="#" role="button">OK</a></p>
+<p><a class="btn btn-lg btn-success" href="#" role="button" id="ok_button">OK</a></p>
       </div>
 
     </div> <!-- /container -->
@@ -100,7 +100,7 @@
         var i=0;
         function add_row_data(bill_date, bill_price, bill_type, bill_comment, bill_assign) {
 		    $('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
-            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control' value='"+bill_date+"'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
+            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control' value='"+bill_date+"'> </td><td><input  id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md' value="+bill_price+"></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md' value="+bill_comment+"></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
             
             var x = document.getElementById("billType"+i);
             for (var idx = 0; idx < x.options.length; ++idx) {
@@ -120,7 +120,7 @@
         }
         $(document).on('click', '#add_row', function(){
             $('#tab_logic').append('<tr id="addr'+(i)+'"></tr>');
-            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control'> </td><td><input  name='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  name='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
+            $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input id='date"+i+"' data-date-format='yyyy/mm/dd' placeholder='Pick a date' class='datepickerx form-control'> </td><td><input id='price"+i+"' type='text' placeholder='Price'  class='form-control input-md'></td><td> <select class='form-control' id='billType"+i+"'><option value='normal'>Normal</option><option value='icash'>ICash</option> <option value='network'>Network</option> <option value='oil'>Oil</option></select></td><td><input  id='comment"+i+"' type='text' placeholder='Comment'  class='form-control input-md'></td><td><select class='form-control' id='preAssign"+i+"'> <option value='0'>- Choose a card -</option> <option value='1'>HN</option> <option value='2'>YS</option> <option value='3'>HNICash</option> </select></td>");
 
             i++; 
 	 
@@ -130,7 +130,9 @@
                     $(this).datepicker('hide');
                     });
         });	
-
+        $("#ok_button").click(function() {
+                findBest();
+                });
         $(document).ready(function(){
 
             $("#delete_row").click(function(){
@@ -159,43 +161,100 @@
     </script>
 
     <script>
-        var cardMgr = new Module.CredictCardMgr();
-        var hnCard = new Module.CredictCardHN("hnCard");
-        var ysCard = new Module.CredictCardYS("ys icash");
-        cardMgr.addCard(hnCard);
-        cardMgr.addCard(ysCard);
-        var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");
-        var a2 = new Module.Bill(2015, 9, 25, 1317, "network", "pchome");
-        var a3 = new Module.Bill(2015, 9, 30, 528, "normal", "baby1");
-        var a4 = new Module.Bill(2015, 9, 30, 853, "normal", "baby2");
-        var a5 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil1");
-        var a6 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil2");
-        var a7 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil3");
-        var a8 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil4");
-        var a9 = new Module.Bill(2015, 9, 100, 1490, "network", "baby3");
-        var a0 = new Module.Bill(2015, 9, 100, 25000, "network", "iphone");
         
-	    cardMgr.addBill(a1, null);
-        cardMgr.addBill(a2, null);
-        cardMgr.addBill(a3, null);
-        cardMgr.addBill(a4, null);
-        cardMgr.addBill(a5, null);
-        cardMgr.addBill(a6, null);
-        cardMgr.addBill(a7, null);
-        cardMgr.addBill(a8, null);
-        cardMgr.addBill(a9, null);
-        cardMgr.addBill(a0, null);
-        cardMgr.assignCard();
-	// =============================================
-        console.log(cardMgr.getMaxDisCount());
+        function findBest() {
+            var cardMgr = new Module.CredictCardMgr();
+            var hnCard = new Module.CredictCardHN("hnCard");
+            var ysCard = new Module.CredictCardYS("ys icash");
+            var hnICashCard = new Module.CredictCardHNICash("hn icash");
+            cardMgr.addCard(hnCard);
+            cardMgr.addCard(ysCard);
+            cardMgr.addCard(hnICashCard);
+            var bills = [];            
+            for (var idx = 0; idx < i; ++idx) {
+                var current_date = $("#date"+idx).val();
+                if (typeof current_date == 'undefined')
+                    continue;
+                var toks = current_date.split("/");
+                var year = parseInt(toks[0]);
+                var month = parseInt(toks[1]);
+                var day = parseInt(toks[2]);
+                console.log(year+","+month+","+day);
+                
+                var current_price = parseInt($("#price"+idx).val());
+                if (typeof current_price == 'undefined')
+                    continue;
+                console.log(current_price);
 
-        var hnBillVector = new Module.vectorBill();
-        hnCard.getBestAssignBill(hnBillVector);
-        console.log(hnBillVector.size());
+                var current_bill_type = $("#billType"+idx).val();
+                if (typeof current_bill_type == 'undefined')
+                    continue;
+                console.log(current_bill_type);
+                var current_comment = $("#comment"+idx).val();
+                if (typeof current_comment == 'undefined')
+                    continue;
+                console.log(current_comment);
+                var current_assign = $("#preAssign"+idx).val();
+                if (typeof current_assign == 'undefined')
+                    continue;
+                console.log(current_assign);
 
-        var ysBillVector = new Module.vectorBill();
-        ysCard.getBestAssignBill(ysBillVector);
-        console.log(ysBillVector.size());
+                bills.push(new Module.Bill(year, month, day, current_price, current_bill_type, current_comment));
+            }
+            for (var billIdx = 0; billIdx < bills.length; ++billIdx) {
+                cardMgr.addBill(bills[billIdx], null);
+            }
+            cardMgr.assignCard();
+            
+            console.log(cardMgr.getMaxDisCount());
+
+            var hnBillVector = new Module.vectorBill();
+            hnCard.getBestAssignBill(hnBillVector);
+            console.log(hnBillVector.size());
+
+            var ysBillVector = new Module.vectorBill();
+            ysCard.getBestAssignBill(ysBillVector);
+            console.log(ysBillVector.size());
+
+            var hnICashBillVector = new Module.vectorBill();
+            hnICashCard.getBestAssignBill(hnICashBillVector);
+            console.log(hnICashBillVector.size());
+/*
+
+            var a1 = new Module.Bill(2015, 9, 20, 500, "icash", "regular icash");
+            var a2 = new Module.Bill(2015, 9, 25, 1317, "network", "pchome");
+            var a3 = new Module.Bill(2015, 9, 30, 528, "normal", "baby1");
+            var a4 = new Module.Bill(2015, 9, 30, 853, "normal", "baby2");
+            var a5 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil1");
+            var a6 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil2");
+            var a7 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil3");
+            var a8 = new Module.Bill(2015, 9, 100, 1000, "oil", "regular oil4");
+            var a9 = new Module.Bill(2015, 9, 100, 1490, "network", "baby3");
+            var a0 = new Module.Bill(2015, 9, 100, 25000, "network", "iphone");
+
+            cardMgr.addBill(a1, null);
+            cardMgr.addBill(a2, null);
+            cardMgr.addBill(a3, null);
+            cardMgr.addBill(a4, null);
+            cardMgr.addBill(a5, null);
+            cardMgr.addBill(a6, null);
+            cardMgr.addBill(a7, null);
+            cardMgr.addBill(a8, null);
+            cardMgr.addBill(a9, null);
+            cardMgr.addBill(a0, null);
+            cardMgr.assignCard();
+            // =============================================
+            console.log(cardMgr.getMaxDisCount());
+
+            var hnBillVector = new Module.vectorBill();
+            hnCard.getBestAssignBill(hnBillVector);
+            console.log(hnBillVector.size());
+
+            var ysBillVector = new Module.vectorBill();
+            ysCard.getBestAssignBill(ysBillVector);
+            console.log(ysBillVector.size());
+*/
+        }
     </script>
 </body>
 </html>
