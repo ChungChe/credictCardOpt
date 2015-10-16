@@ -51,7 +51,7 @@ EMSCRIPTEN_BINDINGS(CreditCardMgr) {
 	.function("addBill", &CreditCardMgr::addBill, allow_raw_pointers())
 	.function("addCard", &CreditCardMgr::addCard, allow_raw_pointers())
 	.function("assignCard", &CreditCardMgr::assignCard)
-	.function("getMaxDisCount", &CreditCardMgr::getMaxDisCount);
-	.function("getChartX", &CreditCardMgr::getChartX);
+	.function("getMaxDisCount", &CreditCardMgr::getMaxDisCount)
+	.function("getChartX", &CreditCardMgr::getChartX)
 	.function("getChartY", &CreditCardMgr::getChartY);
 };
