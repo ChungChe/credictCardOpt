@@ -5,4 +5,4 @@ all:
 	g++ $(CFLAGS) main.cpp -D_GPLUSPLUS_
 
 emcripten:
-	em++ --bind -o output.js *.cpp
+	em++ --bind -o output.js main.cpp embind.cpp
