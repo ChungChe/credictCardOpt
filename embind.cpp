@@ -21,6 +21,7 @@ EMSCRIPTEN_BINDINGS(Bill) {
         .function("getDay", &Bill::getDay)
         .function("getComment", &Bill::getComment);
     register_vector<Bill*>("vectorBill");
+    register_vector<int>("vectorInt");
 }
 
 EMSCRIPTEN_BINDINGS(CreditCardBase) {
@@ -51,4 +52,6 @@ EMSCRIPTEN_BINDINGS(CreditCardMgr) {
 	.function("addCard", &CreditCardMgr::addCard, allow_raw_pointers())
 	.function("assignCard", &CreditCardMgr::assignCard)
 	.function("getMaxDisCount", &CreditCardMgr::getMaxDisCount);
+	.function("getChartX", &CreditCardMgr::getChartX);
+	.function("getChartY", &CreditCardMgr::getChartY);
 };

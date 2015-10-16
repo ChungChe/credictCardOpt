@@ -168,11 +168,15 @@ class CreditCardMgr
         void addBill(Bill *b, CreditCardBase *card);
         void addCard(CreditCardBase *card);
         void assignCard();
-	int  getMaxDisCount() {return m_maxDisCount;};
+        int  getMaxDisCount() {return m_maxDisCount;};
+        void getChartX(vector<int>& data) { data = m_betterIterX; }
+        void getChartY(vector<int>& data) { data = m_betterIterY; }
     private:
-        vector<CreditCardBase*> m_creditCardList;
-        vector<Bill*> m_billList;
-        int m_maxDisCount;
+        vector<CreditCardBase*>  m_creditCardList;
+                  vector<Bill*>  m_billList;
+                            int  m_maxDisCount;
+                    vector<int>  m_betterIterX;
+                    vector<int>  m_betterIterY;
 };
 
 #endif

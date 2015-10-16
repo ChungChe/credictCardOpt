@@ -186,11 +186,16 @@ void CreditCardMgr::assignCard()
         }
         if (totalDisCount > m_maxDisCount) {
             m_maxDisCount = totalDisCount;
+            m_betterIterX.push_back(iter);
+            m_betterIterY.push_back(totalDisCount);
             for (size_t i = 0; i < m_creditCardList.size(); i++) {
                 m_creditCardList[i]->commitCurrentAssign();
             }
         }
     }
+    m_betterIterX.push_back(maxIter);
+    m_betterIterY.push_back(m_maxDisCount);
+
     printf("max disCount = %d\n", m_maxDisCount);
 
     printf("==================================\n");
