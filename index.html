@@ -17,6 +17,11 @@
     
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+
     <script src="/output.js"></script>
     <style>
         .btn-space {
@@ -285,6 +290,29 @@
                 }
             }
             cardMgr.assignCard();
+            var betterX = new Module.vectorInt();
+            var betterY = new Module.vectorInt();
+            cardMgr.getChartX(betterX);
+            cardMgr.getChartY(betterY);
+            var chartData = [];
+            for (var chartIdx = 0; chartIdx < betterX.size(); ++chartIdx) {
+                // {iter: 13, value: 20}, ... 
+                var item = {
+                    "x" : betterX.get(chartIdx), "discount": betterY.get(chartIdx)
+                }
+                chartData.push(item);
+            }
+            // empty the previous chart
+            $("#algorithmChart").empty();
+            var morrisChart = Morris.Line({
+                element: 'algorithmChart',
+                data: chartData,
+                xkey: 'x',
+                parseTime: false,
+                ykeys: ['discount'],
+                labels: ['Discount']
+            });
+
             //console.log(total_price);
             //console.log(cardMgr.getMaxDisCount());
             var discount = parseInt(cardMgr.getMaxDisCount());
@@ -344,7 +372,10 @@
             hnBillVector.delete();
             ysBillVector.delete();
             hnICashBillVector.delete();
+            betterX.delete();
+            betterY.delete();
 
+            chartData = [];
             cardsTaken = [];
 /*
 
@@ -383,5 +414,6 @@
 */
         }
     </script>
+    <div id="algorithmChart" style="height: 250px;"></div>
 </body>
 </html>
