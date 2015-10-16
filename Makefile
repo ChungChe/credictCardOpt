@@ -2,4 +2,7 @@ CFLAGS = -Wall -O2
 
 
 all:
-	g++ $(CFLAGS) *.cpp
+	g++ $(CFLAGS) main.cpp -D_GPLUSPLUS_
+
+emcripten:
+	em++ --bind -o output.js *.cpp

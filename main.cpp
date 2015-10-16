@@ -1,163 +1,4 @@
-#include <cstdlib>
-#include <cstdio>
-#include <vector>
-#include <cassert>
-#include <cmath>
-#include <cstring>
-#include <string>
-#include <emscripten/bind.h>
-
-using std::vector;
-using namespace emscripten;
-
-
-
-enum BillType {normal, icash, network, oil};
-
-EMSCRIPTEN_BINDINGS(BillType) {
-enum_<BillType>("BillType")
-	.value("normal", normal)
-	.value("icash", icash)
-	.value("network", network)
-	.value("oil", oil);
-}
-class Bill
-{
-    public:
-        Bill(int p_year, int p_month, int p_day, int p_amount, enum BillType p_type, std::string p_comment)
-            :m_year(p_year), m_month(p_month), m_day(p_day), m_amount(p_amount), m_type(p_type)
-        {
-        	m_comment = p_comment; 
-        }
-
-
-        int getAmount() { return m_amount; }
-        enum BillType getType() { return m_type;}
-        void info()
-        {
-            printf("year = %d, month = %d, day = %d, amount = %d, type = %d, comment = %s\n",
-                    m_year, m_month, m_day, m_amount, m_type, m_comment.c_str());
-        }
-        int getYear() { return m_year; }
-        int getMonth() { return m_month; }
-        int getDay() { return m_day; }
-        std::string getComment() { return m_comment; }
-    private:
-        int m_year;
-        int m_month;
-        int m_day;
-        int m_amount;
-        enum BillType m_type;
-	    std::string m_comment;
-};
-
-EMSCRIPTEN_BINDINGS(Bill) {
-    class_<Bill>("Bill")
-        .constructor<int, int, int, int, enum BillType, std::string>()
-        .function("getAmount", &Bill::getAmount)
-        .function("getType", &Bill::getType)
-        .function("info", &Bill::info)
-        .function("getYear", &Bill::getYear)
-        .function("getMonth", &Bill::getMonth)
-        .function("getDay", &Bill::getDay)
-        .function("getComment", &Bill::getComment);
-    register_vector<Bill*>("vectorBill");
-}
-
-class CreditCardBase
-{
-    public:
-        CreditCardBase(std::string p_name, int p_dueDate)
-            : m_dueDate(p_dueDate), m_commitDisCount(0)
-        {
-	    m_name = p_name;
-        }
-	CreditCardBase(std::string p_name)
-	{
-	    CreditCardBase(p_name, 1);
-	}
-        virtual ~CreditCardBase()
-        {}
-
-        virtual int getDisCount() {return 0;};
-
-        void addPreAssignBill(Bill* b)
-        {
-            m_preAssignBillList.push_back(b);
-        }
-
-        void addAssignBill(Bill* b)
-        {
-            m_assignBillList.push_back(b);
-        }
-
-        void clearAssignBill()
-        {
-            m_assignBillList.clear();
-        }
-
-        int getDisCountForCommit() 
-        {
-            return m_commitDisCount;
-        }
-        void commitCurrentAssign()
-        {
-            m_bestAssignBillList.clear();
-            for (size_t i = 0; i < m_preAssignBillList.size(); i++) {
-                m_bestAssignBillList.push_back(m_preAssignBillList[i]);
-            }
-            for (size_t i = 0; i < m_assignBillList.size(); i++) {
-                m_bestAssignBillList.push_back(m_assignBillList[i]);
-            }
-            m_commitDisCount = getDisCount();
-        }
-
-        void dumpBestAssign()
-        {
-            printf("credit card = %s\n", m_name.c_str());
-            printf("disCount = %d\n", getDisCountForCommit());
-            for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
-                m_bestAssignBillList[i]->info();
-            }
-        }
-        
-        void getBestAssignBill(vector<Bill*>& billList)
-        {
-            billList.clear();
-            for (size_t i = 0; i < m_bestAssignBillList.size(); i++) {
-                billList.push_back(m_bestAssignBillList[i]);
-            }
-        }
-    protected:
-
-        void _getMergeList(vector<Bill*>& mergeList)
-        {
-            mergeList.clear();
-            for (size_t i = 0; i < m_preAssignBillList.size(); i++) {
-                mergeList.push_back(m_preAssignBillList[i]);
-            }
-            for (size_t i = 0; i < m_assignBillList.size(); i++) {
-                mergeList.push_back(m_assignBillList[i]);
-            }
-        }
-
-        int m_dueDate;
-        int m_commitDisCount;
-        
-        vector<Bill*> m_preAssignBillList;
-        vector<Bill*> m_assignBillList;
-        vector<Bill*> m_bestAssignBillList;
-	    std::string m_name;
-};
-
-class CreditCardHN : public CreditCardBase
-{
-    public:
-	CreditCardHN(std::string p_name)
-            : CreditCardBase(p_name, 1)
-        {}
-        int getDisCount() ;
-};
+#include "creditCardOpt.h"
 
 int CreditCardHN::getDisCount() 
 {
@@ -165,10 +6,10 @@ int CreditCardHN::getDisCount()
     _getMergeList(tmpList);
 
     int normalSum = 0;
-    const int cnt888 = 5;
+    const unsigned int cnt888 = 5;
     double sum888DisCount = 0;
     double list888[cnt888];
-    int idx = 0;
+    int unsigned idx = 0;
     const int th = 12000;
     for (size_t i = 0; i < tmpList.size(); i++) {
         int val = tmpList[i]->getAmount();
@@ -232,18 +73,7 @@ int CreditCardHN::getDisCount()
 
     return (int) disCount;
 }
-;
 
-class CreditCardYS : public CreditCardBase
-{
-    public:
-        CreditCardYS(std::string p_name)
-            : CreditCardBase(p_name, 1)
-        {}
-        int getDisCount();
-    protected:
-        int _check699();
-};
 int CreditCardYS::_check699()
 {
     vector<Bill*> tmpList;
@@ -298,16 +128,6 @@ int CreditCardYS::getDisCount()
     return (int) (normalDisCount + icashDisCount + netDisCount);
 }
 
-
-class CreditCardHNICash : public CreditCardBase
-{
-    public:
-        CreditCardHNICash(std::string p_name)
-            : CreditCardBase(p_name, 1)
-        {}
-        int getDisCount();
-};
-
 int CreditCardHNICash::getDisCount()
 {
     vector<Bill*> tmpList;
@@ -323,53 +143,6 @@ int CreditCardHNICash::getDisCount()
     return (int) (0.025 * sum);
 }
 
-EMSCRIPTEN_BINDINGS(CreditCardBase) {
-    class_<CreditCardBase>("CreditCardBase")
-	.constructor<std::string, int>()
-	.function("getDiscount", &CreditCardBase::getDisCount, pure_virtual())
-	.function("addPreAssignBill", &CreditCardBase::addPreAssignBill, allow_raw_pointers())
-	.function("addAssignBill", &CreditCardBase::addAssignBill, allow_raw_pointers())
-	.function("clearAssignBill", &CreditCardBase::clearAssignBill)
-	.function("getDisCountForCommit", &CreditCardBase::getDisCountForCommit)
-	.function("commitCurrentAssign", &CreditCardBase::commitCurrentAssign)
-	.function("dumpBestAssign", &CreditCardBase::dumpBestAssign)
-	.function("getBestAssignBill", &CreditCardBase::getBestAssignBill);
-    class_<CreditCardHN, base<CreditCardBase>>("CreditCardHN")
-	 .constructor<std::string>()
-	 .function("getDisCount", &CreditCardHN::getDisCount);
-    class_<CreditCardYS, base<CreditCardBase>>("CreditCardYS")
-	 .constructor<std::string>()
-	 .function("getDisCount", &CreditCardYS::getDisCount);
-    class_<CreditCardHNICash, base<CreditCardBase>>("CreditCardHNICash")
-	 .constructor<std::string>();
-}
-
-class CreditCardMgr
-{
-    public:
-        CreditCardMgr()
-            : m_maxDisCount(0)
-        {
-            srand(0);
-        }
-        void addBill(Bill *b, CreditCardBase *card);
-        void addCard(CreditCardBase *card);
-        void assignCard();
-	int  getMaxDisCount() {return m_maxDisCount;};
-    private:
-        vector<CreditCardBase*> m_creditCardList;
-        vector<Bill*> m_billList;
-        int m_maxDisCount;
-};
-
-EMSCRIPTEN_BINDINGS(CreditCardMgr) {
-    class_<CreditCardMgr>("CreditCardMgr")
-	.constructor()
-	.function("addBill", &CreditCardMgr::addBill, allow_raw_pointers())
-	.function("addCard", &CreditCardMgr::addCard, allow_raw_pointers())
-	.function("assignCard", &CreditCardMgr::assignCard)
-	.function("getMaxDisCount", &CreditCardMgr::getMaxDisCount);
-};
 
 void CreditCardMgr::addBill(Bill *b, CreditCardBase *card)
 {
@@ -427,9 +200,8 @@ void CreditCardMgr::assignCard()
     }
 
 }
-//#include "glue.cpp"
 // remove the main, let javascript do it!
-#if 0
+#if _GPLUSPLUS_
 int main()
 {
     CreditCardMgr cardMgr;
