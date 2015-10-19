@@ -5,6 +5,7 @@ Add bills then press "OK" to get best credit card assignments
 <a href="http://jsbin.com/qococo">Demo</a>
 
 <a href="http://jsbin.com/qococo/edit?html,output">JSBin</a>
+
 =========================================================
 Screenshot:
 <img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
