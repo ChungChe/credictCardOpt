@@ -166,8 +166,12 @@ void CreditCardMgr::addCard(CreditCardBase *card)
     m_creditCardList.push_back(card);
 }
 
+static int g_iter = -1;
+
+
 void CreditCardMgr::assignCard()
 {
+#if 0
     size_t maxIter = (size_t) (2 * pow(m_creditCardList.size(), m_billList.size()));
     //    printf("maxIter = %d (base = %d, exp = %d)\n", maxIter, m_creditCardList.size(), m_billList.size());
 
@@ -203,8 +207,52 @@ void CreditCardMgr::assignCard()
         m_creditCardList[i]->dumpBestAssign();
         printf("==================================\n");
     }
+#else
+    _assignCardKernel(0);
 
+    printf("max disCount = %d\n", m_maxDisCount);
+
+    printf("==================================\n");
+    for (size_t i = 0; i < m_creditCardList.size(); i++) {
+        m_creditCardList[i]->dumpBestAssign();
+        printf("==================================\n");
+    }
+
+#endif
 }
+
+
+
+void CreditCardMgr::_assignCardKernel(size_t billIdx)
+{
+    g_iter++;
+
+    if (billIdx >= m_billList.size()) {
+        int totalDisCount = 0;
+        for (size_t i = 0; i < m_creditCardList.size(); i++) {
+            totalDisCount += m_creditCardList[i]->getDisCount();
+        }
+        
+        if (totalDisCount > m_maxDisCount) {
+            m_maxDisCount = totalDisCount;
+            m_betterIterX.push_back(g_iter);
+            m_betterIterY.push_back(totalDisCount);
+            for (size_t i = 0; i < m_creditCardList.size(); i++) {
+                m_creditCardList[i]->commitCurrentAssign();
+            }
+        }
+    }
+    else {
+        for (size_t i = 0; i < m_creditCardList.size(); i++) {
+            m_creditCardList[i]->addAssignBill(m_billList[billIdx]);
+            _assignCardKernel(billIdx + 1);
+            m_creditCardList[i]->popAssignBill();
+        }
+    }
+}
+
+
+
 // remove the main, let javascript do it!
 #if _GPLUSPLUS_
 int main()

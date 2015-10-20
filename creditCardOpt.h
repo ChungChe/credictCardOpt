@@ -48,12 +48,12 @@ class CreditCardBase
         CreditCardBase(std::string p_name, int p_dueDate)
             : m_dueDate(p_dueDate), m_commitDisCount(0)
         {
-	    m_name = p_name;
+	        m_name = p_name;
         }
-	CreditCardBase(std::string p_name)
-	{
-	    CreditCardBase(p_name, 1);
-	}
+        CreditCardBase(std::string p_name)
+        {
+            CreditCardBase(p_name, 1);
+        }
         virtual ~CreditCardBase()
         {}
 
@@ -72,6 +72,11 @@ class CreditCardBase
         void clearAssignBill()
         {
             m_assignBillList.clear();
+        }
+
+        void popAssignBill()
+        {
+            m_assignBillList.pop_back();
         }
 
         int getDisCountForCommit() 
@@ -133,8 +138,8 @@ class CreditCardHN : public CreditCardBase
     public:
 	CreditCardHN(std::string p_name)
             : CreditCardBase(p_name, 1)
-        {}
-        int getDisCount() ;
+    {}
+    int getDisCount() ;
 };
 
 class CreditCardYS : public CreditCardBase
@@ -172,11 +177,13 @@ class CreditCardMgr
         void getChartX(vector<int>& data) { data = m_betterIterX; }
         void getChartY(vector<int>& data) { data = m_betterIterY; }
     private:
+        void _assignCardKernel(size_t billIdx);
+
         vector<CreditCardBase*>  m_creditCardList;
-                  vector<Bill*>  m_billList;
-                            int  m_maxDisCount;
-                    vector<int>  m_betterIterX;
-                    vector<int>  m_betterIterY;
+        vector<Bill*>  m_billList;
+        int  m_maxDisCount;
+        vector<int>  m_betterIterX;
+        vector<int>  m_betterIterY;
 };
 
 #endif
