@@ -10,9 +10,13 @@ Add bills then press "OK" to get best credit card assignments
 Screenshot:
 <img src="https://github.com/ChungChe/creditCardOpt/raw/master/images/screenshot.png">
 =========================================================
-How to compile:
+How to compile in GNU G++:
 ```
-em++ --bind -o output.js main.cpp
+make
+```
+How to compile in Emcripten:
+```
+make emscripten
 ```
 =========================================================
 How to run:
